@@ -13,3 +13,24 @@ services:
         context: ./haproxy/
       ports:
         - "80:80"
+        - "14567:14567"
+        - "1936:1936"
+
+    metricbeat:
+      build:
+        context: ./metricbeat
+        args:
+          - METRICBEAT_FILE=metricbeat.yml
+          - ELK_HOST=$ELK_HOST
+          - STAT_IP=$STAT_IP
+      container_name: metricbeat
+      depends_on:
+        - haproxy
+        - elk
+      volumes:
+        - /var/run/docker.sock:/var/run/docker.sock
+      environment:
+        - WAIT_FOR_HOSTS='${ELK_HOST}:9200 ${ELK_HOST}:5601'
+        - HOST_ELASTICSEARCH=$ELK_HOST:9200
+        - HOST_KIBANA=$ELK_HOST:5601 
+

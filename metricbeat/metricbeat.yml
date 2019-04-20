@@ -1,0 +1,23 @@
+metricbeat.modules:
+- module: haproxy
+  metricsets: ["info", "stat"]
+  period: 10s
+  hosts: ["tcp://STAT_IP"]
+  enabled: true
+
+output.elasticsearch:
+  hosts: ["ELK_HOST:9200"]
+
+setup.kibana:
+  host: "ELK_HOST:5601"
+
+setup.dashboards.enabled: true
+
+logging.level: debug
+logging.to_files: true
+logging.to_syslog: false
+logging.files:
+  path: /var/log/metricbeat
+  name: metricbeat.log
+  keepfiles: 2
+  permissions: 0644
