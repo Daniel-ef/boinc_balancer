@@ -1,8 +1,8 @@
 metricbeat.modules:
 - module: haproxy
-  metricsets: ["info", "stat"]
+  metricsets: ["stat"]
   period: 10s
-  hosts: ["tcp://STAT_IP"]
+  hosts: ["http://STAT_IP/stats"]
   enabled: true
 
 output.elasticsearch:
